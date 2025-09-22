@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -28,13 +29,17 @@ public class ItemService {
         return itemRepository.save(newItem);
     }
 
-    public void deleteItemById(Long id) {
-        itemRepository.deleteItemByItemId(id);
+    public void deleteById(Long id) {
+        itemRepository.deleteById(id);
     }
 
     public Item updateItem(Item updatedItem) {
-        Item item = itemRepository.findByName(updatedItem.getName());
-        BeanUtils.copyProperties(updatedItem, item);
-        return itemRepository.save(item);
+        Optional<Item> optionalItem = itemRepository.findById(updatedItem.getItemId());
+        if (optionalItem.isEmpty()) {
+            return null;
+        }
+        Item existingItem = optionalItem.get();
+        BeanUtils.copyProperties(updatedItem, existingItem);
+        return itemRepository.save(existingItem);
     }
 }

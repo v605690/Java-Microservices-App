@@ -4,7 +4,8 @@ import com.crus.item_microservice.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    void deleteItemByItemId(Long id);
 
     Item findByName(String name);
+
+    Item findByNameId(String name);
 }
