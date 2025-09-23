@@ -1,6 +1,7 @@
 package com.crus.user_microservice.controller;
 
 import com.crus.user_microservice.model.User;
+import com.crus.user_microservice.service.UserDiscoveryService;
 import com.crus.user_microservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    UserDiscoveryService userDiscoveryService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
@@ -37,8 +41,20 @@ public class UserController {
         }
     }
 
+    @PostMapping("/remote")
+    public ResponseEntity<?> createRemoteUser(@RequestBody User user) {
+        try {
+            return userDiscoveryService.createRemoteUser(user);
+//            User newUser = userService.createNewUser(user);
+//            return ResponseEntity.created(
+//                    URI.create("/user/" + newUser.getId())).body(newUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<?> createNewUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
             User newUser = userService.createNewUser(user);
             return ResponseEntity.created(

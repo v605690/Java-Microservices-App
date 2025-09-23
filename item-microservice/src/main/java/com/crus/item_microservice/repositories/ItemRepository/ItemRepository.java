@@ -7,5 +7,4 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Item findByName(String name);
 
-    Item findByNameId(String name);
 }
