@@ -25,8 +25,13 @@ public class UserDiscoveryService {
         if (instance == null) {
             throw new IllegalStateException("user-microservice not found in Eureka registry");
         }
-        return "http://localhost:" + instance.getPort();
-//        return instance.getHomePageUrl();
+
+        InstanceInfo.InstanceStatus status = eurekaClient.getInstanceRemoteStatus();
+
+        if (status != InstanceInfo.InstanceStatus.UP) {
+            throw new IllegalStateException("user-microservice is not UP");
+        }
+        return instance.getHomePageUrl();
     }
 
     public ResponseEntity<User> createRemoteUser(User user) {

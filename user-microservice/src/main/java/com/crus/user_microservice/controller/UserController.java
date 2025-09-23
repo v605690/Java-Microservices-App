@@ -45,9 +45,6 @@ public class UserController {
     public ResponseEntity<?> createRemoteUser(@RequestBody User user) {
         try {
             return userDiscoveryService.createRemoteUser(user);
-//            User newUser = userService.createNewUser(user);
-//            return ResponseEntity.created(
-//                    URI.create("/user/" + newUser.getId())).body(newUser);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
