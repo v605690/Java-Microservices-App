@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+    /* This CSS rule targets all h2 elements */
+        h2 { margin-left: 10px; margin-top: 10px; }
+        label { margin-left: 10px; }
+        button { margin-left: 10px; }
+        p { margin-left: 10px; }
+    </style>
+</head>
+<body>
+<h2>Register</h2>
+
+<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+<form action="#" th:action="@{/register}" th:object="${user}" method="post">
+
+    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+        <ul>
+            <li th:each="error : ${#fields.errors('*')}" th:text="${error}">Error message</li>
+        </ul>
+    </div>
+
+    <style>
+        /* This CSS rule targets all h2 elements */
+        label {
+            margin-left: 10px;
+        }
+    </style>
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="username" th:field="*{username}" style="max-width: 300px; margin-left: 10px;" required />
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" style="max-width: 300px; margin-left: 10px;" required />
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address:</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" style="max-width: 300px; margin-left: 10px;" required />
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name:</label>
+            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" style="max-width: 300px; margin-left: 10px;" required />
+            <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="text-danger"></div>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success" style="width: 300px; margin-left: 10px;">Register</button>
+        </div>
+
+</form>
+
+<!--    <style>-->
+<!--        /* This CSS rule targets all h2 elements */-->
+<!--        button {-->
+<!--            margin-left: 10px;-->
+<!--        }-->
+<!--    </style>-->
+<!--    <div>-->
+<!--        <button type="submit">Register</button>-->
+<!--    </div>-->
+<!--</form>-->
+
+<!--<style>-->
+<!--    /* This CSS rule targets all h2 elements */-->
+<!--    p {-->
+<!--        margin-left: 10px;-->
+<!--    }-->
+<!--</style>-->
+<div style="margin-top: 20px;">
+    <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+    <p><a th:href="@{/}">Back to Home</a></p>
+</div>
+
+</body>
+</html>

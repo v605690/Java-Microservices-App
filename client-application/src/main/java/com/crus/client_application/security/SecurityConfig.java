@@ -1,4 +1,4 @@
-package security;
+package com.crus.client_application.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +18,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        .requestMatchers("/", "/register", "/login").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(login -> login.loginPage("/login").permitAll());
-
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll())
+                .userDetailsService(myUserDetailsService);
         return http.build();
     }
 }
