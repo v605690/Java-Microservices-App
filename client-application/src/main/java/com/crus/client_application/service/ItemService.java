@@ -2,6 +2,7 @@ package com.crus.client_application.service;
 
 import com.crus.client_application.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ItemService {
 
     @Autowired
+    @LoadBalanced
     private RestTemplate restTemplate;
 
     public List<Item> getAllItems() {
@@ -37,5 +39,18 @@ public class ItemService {
         }
     }
             return List.of();
+    }
+
+    public Item getItemById(Long itemId) {
+        try {
+            ResponseEntity<Item> response = restTemplate.getForEntity
+                    ("http://item-microservice/item/" + itemId, Item.class);
+            Item item = response.getBody();
+            System.out.println("Item microservice returned: " + (item != null ? item.getName() : "null"));
+            return item;
+        } catch (Exception e) {
+            System.out.println("Error fetching item " + itemId + ": " + e.getMessage());
+            return null;
+        }
     }
 }

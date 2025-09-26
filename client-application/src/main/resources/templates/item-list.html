@@ -8,26 +8,40 @@
 </head>
 <body>
 <div class="container">
+    <div th:if="${param.error}" class="alert alert-danger">
+        Failed to add item to cart. Please try again.
+    </div>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">Item Id</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${items.empty}">
+        <tr th:if="${items == null or items.empty}">
+            <td colspan="4" class="text-center">No items available</td>
             <td>0</td>
         </tr>
         <tr th:each="item : ${items}">
             <th scope="row" th:text="${item.id}"></th>
             <td th:text="${item.name}"></td>
             <td th:text="${item.description}"></td>
-            <td><a th:href="@{/cart/userId}" class="btn btn-primary">Add</a></td>
+            <td>
+                <form th:action="@{/cart/{userId}(userId=${T(java.lang.Math).abs(#authentication.name.hashCode())})}" method="post" style="display: inline;">
+                    <input type="hidden" name="item-id" th:value="${item.id}"/>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
+    <div class="mt-3">
+        <a href="/cart" class="btn btn-secondary">View Cart</a>
+        <a href="/" class="btn btn-primary">Back to Home</a>
+    </div>
 </div>
 </body>
 </html>

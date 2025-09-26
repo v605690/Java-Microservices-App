@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 @Entity
 @Getter
@@ -23,4 +24,5 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer amount;
+
 }
