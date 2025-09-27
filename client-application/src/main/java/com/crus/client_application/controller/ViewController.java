@@ -70,7 +70,6 @@ public class ViewController {
 
     @PostMapping("/cart/{userId}")
     public String addCartItem(@PathVariable Long userId, @RequestParam("item-id") Long itemId, Model model) {
-        //model.addAttribute("cart", cartService.addCartItem(userId, itemId));
         try {
             cartService.addCartItem(userId, itemId);
             return "redirect:/cart";
