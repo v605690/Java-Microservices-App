@@ -84,11 +84,15 @@ public class ViewController {
         model.addAttribute("cart", cart != null ? cart : new Cart());
         return "cart";
     }
-    //@GetMapping("/cart/{userId}")
-    public String getCartById(@PathVariable String userId, @RequestParam(required = false) Long itemId, Model mode) {
-        if (itemId != null) {
-            cartService.getCartByUserId(userId);
+
+    @GetMapping("/delete/{itemId}")
+    public String removeFromCart(Model model, @PathVariable Long itemId, Authentication authentication) {
+        try {
+            String username = authentication.getName();
+            cartService.removeCartItem(username, itemId);
+            return "redirect:/cart";
+        } catch (Exception e) {
+            return "redirect:/cart?error=true";
         }
-        return "redirect:/cart";
-   }
+    }
 }

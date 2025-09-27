@@ -3,12 +3,15 @@ package com.crus.client_application.service;
 import com.crus.client_application.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.crus.client_application.model.Item.deletedItem;
 
 @Service
 public class ItemService {
@@ -51,6 +54,21 @@ public class ItemService {
         } catch (Exception e) {
             System.out.println("Error fetching item " + itemId + ": " + e.getMessage());
             return null;
+        }
+    }
+    public void deleteItem(Long itemId) {
+        String url = "http://item-microservice/item/" + itemId;
+        try {
+            ResponseEntity<Void> response = restTemplate.exchange
+                    (url, HttpMethod.DELETE, null, Void.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Item successfully deleted: " + itemId);
+            } else {
+                System.out.println("Failed to delete item. Status code: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+            throw e;
         }
     }
 }

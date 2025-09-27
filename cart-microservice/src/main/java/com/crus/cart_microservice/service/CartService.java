@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class CartService {
 
@@ -50,6 +52,16 @@ public class CartService {
                 .findFirst()
                 .ifPresent(cartItem -> cartItem.setAmount(amount));
         return cart;
+    }
+
+    @Transactional
+    public void removeCartItemByItemId(Long userId, Long itemId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart != null && cart.getItems() != null) {
+            cart.getItems().removeIf(item ->
+                    item.getItemId().equals(itemId));
+            cartRepository.save(cart);
+        }
     }
 }
 

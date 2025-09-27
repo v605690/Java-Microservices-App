@@ -8,6 +8,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CartService {
 
@@ -34,6 +37,28 @@ public class CartService {
         return cart;
     }
 
+    public void removeCartItem(String username, Long itemId) {
+        Long numUserId = convertUsernameToId(username);
+        String url = "http://cart-microservice/cart/" + numUserId + "?item-id=" + itemId;
+
+        System.out.println("Attempting to remove item " + itemId + " from cart for user " + numUserId + " (numUserId: " + numUserId + ")");
+        System.out.println("URL: " + url);
+
+        try {
+        ResponseEntity<Void> response = restTemplate.exchange
+                (url, HttpMethod.DELETE, null, Void.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Item successfully deleted: ");
+            } else {
+                System.out.println("Failed to delete item. Status code: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
 
     public Cart getCartByUserId(String username) {
         try {
@@ -54,6 +79,7 @@ public class CartService {
     }
     private void populateItemDetails(Cart cart) {
         System.out.println("Populating item details for " + cart.getItems().size() + " items");
+
         for (CartItem cartItem : cart.getItems()) {
             if (cartItem.getItemId() != null) {
                 try {
@@ -67,5 +93,4 @@ public class CartService {
             }
         }
     }
-
 }

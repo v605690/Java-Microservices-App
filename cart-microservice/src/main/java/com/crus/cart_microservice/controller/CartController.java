@@ -47,6 +47,19 @@ public class CartController {
         }
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> removeCartItemByItemId(
+            @PathVariable("userId") Long userId,
+            @RequestParam("item-id") Long itemId) {
+
+        try {
+            cartService.removeCartItemByItemId(userId, itemId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PatchMapping("/{userId}/{cartItemId}")
     public ResponseEntity<?> updateItemAmount(
             @PathVariable("userId") Long userId,
