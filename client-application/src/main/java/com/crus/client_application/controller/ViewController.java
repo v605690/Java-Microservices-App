@@ -65,7 +65,7 @@ public class ViewController {
     @GetMapping("/items")
     public String displayItems(Model model) {
         model.addAttribute("items", itemService.getAllItems());
-        return "item-list";
+        return "/item-list";
     }
 
     @PostMapping("/cart/{userId}")
@@ -83,6 +83,28 @@ public class ViewController {
         Cart cart = cartService.getCartByUserId(username);
         model.addAttribute("cart", cart != null ? cart : new Cart());
         return "cart";
+    }
+
+    @GetMapping("/increase/{itemId}")
+        public String increaseCartItem(Model model, @PathVariable Long itemId, Authentication authentication){
+        try {
+            String username = authentication.getName();
+            cartService.increaseCartItem(username, itemId);
+            return "redirect:/cart";
+        } catch (Exception e) {
+            return "redirect:/items?error=true";
+        }
+    }
+
+    @GetMapping("/decrease/{itemId}")
+    public String decreaseCartItem(Model model, @PathVariable Long itemId, Authentication authentication){
+        try {
+            String username = authentication.getName();
+            cartService.decreaseCartItem(username, itemId);
+            return "redirect:/cart";
+        } catch (Exception e) {
+            return "redirect:/items?error=true";
+        }
     }
 
     @GetMapping("/delete/{itemId}")

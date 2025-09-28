@@ -113,3 +113,13 @@
 .table-responsive {
     overflow-x: auto;
 }
+
+.custom-element {
+    margin-left: 10px;
+}
+
+.cart-item-label input[type="text"] {
+    width: 15px; /* Adjust the width as needed */
+    padding: 2px; /* Reduce padding for a more compact look */
+    font-size: 12px; /* Reduce the font size */
+}

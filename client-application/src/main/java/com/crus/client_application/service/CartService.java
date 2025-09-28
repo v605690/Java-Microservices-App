@@ -93,4 +93,12 @@ public class CartService {
             }
         }
     }
+    public void increaseCartItem(String username, Long itemId) {
+        Long userId = convertUsernameToId(username);
+        addCartItem(userId, itemId);
+    }
+
+    public void decreaseCartItem(String username, Long itemId) {
+        removeCartItem(username, itemId);
+    }
 }

@@ -40,13 +40,16 @@
                 <div class="button-group">
                 <a th:href="@{'/increase/' + ${cartItem.itemId}}"
                    class="btn btn-sm btn-dark-yellow rounded-circle btn-circle">+</a>
-
+                    <label class="cart-item-label">
+                        <input type="text" th:id="'count-' + ${cartItem.itemId}" th:value="${cartItem.amount}" readonly />
+                    </label>
                 <a th:href="@{'/decrease/' + ${cartItem.itemId}}"
                    class="btn btn-sm btn-dark-yellow rounded-circle btn-circle">-</a>
-
+                    <div class="custom-element">
                 <a th:href="@{'/delete/' + ${cartItem.itemId}}"
                    onclick="return confirm('Are you sure you want to delete this item?')"
                    class="btn btn-sm btn-danger">Delete</a>
+                    </div>
                 </div>
             </td>
         </tr>
