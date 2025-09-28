@@ -99,6 +99,31 @@ public class CartService {
     }
 
     public void decreaseCartItem(String username, Long itemId) {
-        removeCartItem(username, itemId);
+        // Get the current cart to check the item's amount
+        Cart cart = getCartByUserId(username);
+
+        if (cart != null && cart.getItems() != null) {
+            CartItem targetItem = cart.getItems().stream()
+                    .filter(item -> item.getItemId().equals(itemId))
+                    .findFirst()
+                    .orElse(null);
+
+            if (targetItem != null) {
+                if (targetItem.getAmount() > 1) {
+                    // Item has more than 1, decrease by 1
+                    // Remove completely, then add back amount -1 times
+                    removeCartItem(username, itemId);
+
+                    Long userId = convertUsernameToId(username);
+                    int newAmount = targetItem.getAmount() -1;
+                    for (int i = 0; i < newAmount; i++) {
+                        addCartItem(userId, itemId);
+                    }
+                } else {
+                    // Item has amount = 1, remove
+                    removeCartItem(username, itemId);
+                }
+            }
+        }
     }
 }

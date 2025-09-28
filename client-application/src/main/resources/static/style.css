@@ -88,6 +88,18 @@
     border-color: #B09B12;
 }
 
+.btn-yellow1 {
+    background: #F1C232;
+    border-color: #F1C232;
+    color: #212529;
+}
+
+.btn-green1 {
+    background: #77AB59;
+    border-color: #77AB59;
+    color: #212529;
+}
+
 /* Style for the circular links/buttons */
 .btn-circle {
     width: 30px;
